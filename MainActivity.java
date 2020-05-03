@@ -1,38 +1,110 @@
-package sg.edu.np.WhackAMole;
+package com.example.myapplication;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
 
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private Button ButtonLeft;
+    private Button ButtonMiddle;
+    private Button ButtonRight;
+    private TextView Scores;
+    private int ran;
+    private int score;
+    private static final String TAG = "ButtonActivity";
 
-    /* Hint
-        - The function setNewMole() uses the Random class to generate a random value ranged from 0 to 2.
-        - Feel free to modify the function to suit your program.
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v(TAG, "Whack-A-Mole");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.v(TAG, "Finished Pre-Initialisation!");
+        ButtonLeft = (Button) findViewById(R.id.LeftButton);
+        ButtonRight = (Button) findViewById(R.id.RightButton);
+        ButtonMiddle = (Button) findViewById(R.id.MiddleButton);
+        Scores = (TextView) findViewById(R.id.scores);
+        score = 0;
+        ran = setNewMole();
+        Scores.setText(Integer.toString(score));
+        ButtonLeft.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Log.v(TAG,"Left Button Clicked!");
+                if(ran == 0){
+                    score = score +1;
+                    Log.v(TAG,"Hit, score added!");
+                }
+                else{
+                    score = score -1;
+                    Log.v(TAG, "Missed, score deducted!");
+                }
+                Scores.setText(Integer.toString(score));
+                ran = setNewMole();
+
+            }
+        });
+        ButtonMiddle.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Log.v(TAG,"Middle Button Clicked!");
+                if(ran == 1){
+                    score = score +1;
+                    Log.v(TAG,"Hit, score added!");
+                }
+                else{
+                    score = score -1;
+                    Log.v(TAG, "Missed, score deducted!");
+                }
+                Scores.setText(Integer.toString(score));
+                ran = setNewMole();
+            }
+        });
+        ButtonRight.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Log.v(TAG,"Right Button Clicked!");
+                if(ran == 2){
+                    score = score +1;
+                    Log.v(TAG,"Hit, score added!");
+                }
+                else{
+                    score = score -1;
+                    Log.v(TAG, "Missed, score deducted!");
+                }
+                Scores.setText(Integer.toString(score));
+                ran = setNewMole();
+
+            }
+        });
     }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
-        setNewMole();
-        Log.v(TAG, "Starting GUI!");
-    }
-
-
-    public void setNewMole()
+    public int setNewMole()
     {
         Random ran = new Random();
         int randomLocation = ran.nextInt(3);
+        if(randomLocation == 0){
+            ButtonLeft.setText("*");
+            ButtonMiddle.setText("O");
+            ButtonRight.setText("O");
+        }
+        else if(randomLocation == 1){
+            ButtonMiddle.setText("*");
+            ButtonLeft.setText("O");
+            ButtonRight.setText("O");
+        }
+        else{
+            ButtonRight.setText("*");
+            ButtonMiddle.setText("O");
+            ButtonLeft.setText("O");
+        }
+        return randomLocation;
+
     }
+
+
 }
